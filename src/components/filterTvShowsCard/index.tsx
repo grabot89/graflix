@@ -102,7 +102,7 @@ const FilterTvShowsCard: React.FC<FilterTvShowsCardProps> = ({ nameFilter, genre
         <CardContent>
           <Typography variant="h5" component="h1">
             <SortIcon fontSize="large" />
-            Sort the Tv shows.
+            Sort the TV shows.
           </Typography>
         </CardContent>
       </Card>

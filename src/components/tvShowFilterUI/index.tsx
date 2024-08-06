@@ -5,6 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import { BaseTvShowProps } from "../../types/interfaces";
 
 export const nameFilter = (tvShow: BaseTvShowProps, value: string): boolean => {
+    console.log("tvShow", tvShow, "value", value);
     return tvShow.name.toLowerCase().search(value.toLowerCase()) !== -1;
 };
 

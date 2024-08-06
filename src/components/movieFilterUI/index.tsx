@@ -5,6 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import { BaseMovieProps } from "../../types/interfaces";
 
 export const titleFilter = (movie: BaseMovieProps, value: string): boolean => {
+    console.log("movie", movie, "value", value);
     return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
 };
 

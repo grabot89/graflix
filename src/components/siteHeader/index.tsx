@@ -50,10 +50,10 @@ const SiteHeader: React.FC = () => {
       <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
           <Typography variant="h4" sx={styles.title}>
-            TMDB Client
+            Graflix
           </Typography>
           <Typography variant="h6" sx={styles.title}>
-            All you ever wanted to know about Movies!
+            The Entertainment Hub
           </Typography>
           {isMobile ? (
             <>

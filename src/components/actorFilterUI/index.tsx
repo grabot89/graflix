@@ -5,15 +5,8 @@ import Drawer from "@mui/material/Drawer";
 import { BaseActorProps } from "../../types/interfaces";
 
 export const nameFilter = (actor: BaseActorProps, value: string): boolean => {
+    console.log("actor", actor, "value", value);
     return actor.name.toLowerCase().search(value.toLowerCase()) !== -1;
-};
-
-export const adultFilter = (actor: BaseActorProps, value: boolean): boolean => {
-    return value ? actor.adult : true;
-};
-
-export const genderFilter = (actor: BaseActorProps, value: number): boolean => {
-    return value === actor.gender;
 };
 
 const styles = {
@@ -25,18 +18,17 @@ const styles = {
         position: "fixed",
         top: 20,
         right: 2,
+        backgroundColor: "#5fe723",
     },
 };
 
 interface ActorFilterUIProps {
-    onFilterValuesChange: (f: string, s: string | boolean) => void;
+    onFilterValuesChange: (f: string, s: string) => void;
     nameFilter: string;
-    adultFilter: boolean;
-    genderFilter: string;
 }
 
 
-const ActorFilterUI: React.FC<ActorFilterUIProps> = ({ onFilterValuesChange, nameFilter, adultFilter, genderFilter }) => {
+const ActorFilterUI: React.FC<ActorFilterUIProps> = ({ onFilterValuesChange, nameFilter }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
@@ -57,8 +49,6 @@ const ActorFilterUI: React.FC<ActorFilterUIProps> = ({ onFilterValuesChange, nam
                 <FilterActorsCard
                     onUserInput={onFilterValuesChange}
                     nameFilter={nameFilter}
-                    adultFilter={adultFilter}
-                    genderFilter={genderFilter}
                 />
             </Drawer>
         </>
