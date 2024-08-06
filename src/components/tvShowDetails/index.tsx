@@ -5,15 +5,15 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
-import { ActorDetailsProps, MovieDetailsProps } from "../../types/interfaces";
-import { getMovieCredits } from "../../api/tmdb-api";
+import { ActorDetailsProps, TvShowDetailsProps } from "../../types/interfaces";
+import { getTvShowCredits } from "../../api/tmdb-api";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
-import MovieReviews from '../movieReviews'
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
 import { Link } from "react-router-dom";
+import TvShowReviews from "../tvShowReviews";
 
 const styles = {
     chipSet: {
@@ -35,13 +35,13 @@ const styles = {
     },
 };
 
-const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
+const TvShowDetails: React.FC<TvShowDetailsProps> = (tvShow) => {
     const { data, error, isLoading, isError } = useQuery<ActorDetailsProps[], Error>(
-        ["credits", movie.id],
-        () => getMovieCredits(movie.id)
+        ["credits", tvShow.id],
+        () => getTvShowCredits(tvShow.id)
     );
 
-    const [drawerOpen, setDrawerOpen] = useState(false); // New
+    const [drawerOpen, setDrawerOpen] = useState(false);
     
     if (isLoading) {
         return <Spinner />;
@@ -52,7 +52,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
     }
 
     const cast = data || [];
-    const movieWithCast = { ...movie, cast };
+    const tvShowWithCast = { ...tvShow, cast };
 
     return (
         <>
@@ -61,36 +61,36 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
             </Typography>
 
             <Typography variant="h6" component="p">
-                {movieWithCast.overview}
+                {tvShowWithCast.overview}
             </Typography>
 
             <Paper component="ul" sx={styles.chipSet}>
                 <li>
                     <Chip label="Genres" sx={styles.chipLabel} color="primary" />
                 </li>
-                {movieWithCast.genres.map((g) => (
+                {tvShowWithCast.genres.map((g) => (
                     <li key={g.name}>
                         <Chip label={g.name} />
                     </li>
                 ))}
             </Paper>
             <Paper component="ul" sx={styles.chipSet}>
-                <Chip icon={<AccessTimeIcon />} label={`${movieWithCast.runtime} min.`} />
+                <Chip icon={<AccessTimeIcon />} label={`${tvShowWithCast.number_of_seasons} seasons.`} />
                 <Chip
                     icon={<MonetizationIcon />}
-                    label={`${movieWithCast.revenue.toLocaleString()}`}
+                    label={`${tvShowWithCast.number_of_episodes} episodes.`}
                 />
                 <Chip
                     icon={<StarRate />}
-                    label={`${movieWithCast.vote_average} (${movieWithCast.vote_count}`}
+                    label={`${tvShowWithCast.vote_average} (${tvShowWithCast.vote_count}`}
                 />
-                <Chip label={`Released: ${movieWithCast.release_date}`} />
+                <Chip label={`First aired: ${tvShowWithCast.first_air_date}`} />
             </Paper>
             <Typography variant="h5" component="h3">
                 Cast
             </Typography>
             <Paper component={"ul"} sx={styles.chipSet}>
-                {movieWithCast.cast.map((c) => (
+                {tvShowWithCast.cast.map((c) => (
                     <Link to={`/actors/${c.id}`}>
                         <li key={c.name}>
                             <Chip label={c.name} />
@@ -108,9 +108,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
                 Reviews
             </Fab>
             <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                <MovieReviews {...movieWithCast} />
+                <TvShowReviews {...tvShowWithCast} />
             </Drawer>
         </>
     );
 };
-export default MovieDetails;
+export default TvShowDetails;

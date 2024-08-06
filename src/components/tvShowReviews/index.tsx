@@ -7,10 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import { getMovieReviews } from "../../api/tmdb-api";
+import { getTvShowReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 
-import { MovieDetailsProps, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
+import { TvShowDetailsProps, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
 
 const styles = {
     table: {
@@ -18,11 +18,11 @@ const styles = {
     },
 };
 
-const MovieReviews: React.FC<MovieDetailsProps> = (movie) => { 
+const TvShowReviews: React.FC<TvShowDetailsProps> = (tvShow) => { 
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
-        getMovieReviews(movie.id).then((reviews) => {
+        getTvShowReviews(tvShow.id).then((reviews) => {
             setReviews(reviews);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,10 +47,10 @@ const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
                             <TableCell >{excerpt(r.content)}</TableCell>
                             <TableCell >
                                 <Link
-                                    to={`movies/reviews/${r.id}`}
+                                    to={`tvShows/reviews/${r.id}`}
                                     state={{
                                         review: r,
-                                        movie: movie,
+                                        tvShow: tvShow,
                                     }}
                                 >
                                     Full Review
@@ -64,4 +64,4 @@ const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
     );
 }
 
-export default MovieReviews;
+export default TvShowReviews;

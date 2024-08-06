@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "../headerMovieList";
 import Grid from "@mui/material/Grid";
-import MovieList from "../movieList";
-import { MovieListPageTemplateProps } from "../../types/interfaces";
+import TvShowList from "../tvShowList";
+import { TvShowListPageTemplateProps } from "../../types/interfaces";
 
 const styles = {
   root: { 
@@ -10,16 +10,16 @@ const styles = {
   }
 };
 
-const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({ movies, title, action })=> {
+const TvShowListPageTemplate: React.FC<TvShowListPageTemplateProps> = ({ tvShows, title, action })=> {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
         <Header title={title} />
       </Grid>
       <Grid item container spacing={5}>
-      <MovieList action={action} movies={movies}></MovieList>
+      <TvShowList action={action} tvShows={tvShows}></TvShowList>
       </Grid>
     </Grid>
   );
 }
-export default MovieListPageTemplate;
+export default TvShowListPageTemplate;

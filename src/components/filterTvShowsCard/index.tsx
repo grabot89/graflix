@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { MovieFilterOption,  GenreData} from "../../types/interfaces"
+import { GenreData, TvShowFilterOption } from "../../types/interfaces"
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -11,9 +11,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SortIcon from '@mui/icons-material/Sort';
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { getMovieGenres } from "../../api/tmdb-api";
+import Spinner from "../spinner";
+import { getTVGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
-import Spinner from '../spinner';
 
 const styles = {
   root: {
@@ -29,14 +29,14 @@ const styles = {
 };
 
 
-interface FilterMoviesCardProps {
-  onUserInput: (f: MovieFilterOption, s: string)  => void;
-  titleFilter: string;
+interface FilterTvShowsCardProps {
+  onUserInput: (f: TvShowFilterOption, s: string)  => void;
+  nameFilter: string;
   genreFilter: string;
 }
 
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter, onUserInput }) => {
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getMovieGenres);
+const FilterTvShowsCard: React.FC<FilterTvShowsCardProps> = ({ nameFilter, genreFilter, onUserInput }) => {
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getTVGenres);
 
   if (isLoading) {
     return <Spinner />;
@@ -49,13 +49,13 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
     genres.unshift({ id: "0", name: "All" });
   }
   
-  const handleChange = (e: SelectChangeEvent, type: MovieFilterOption, value: string) => {
+  const handleChange = (e: SelectChangeEvent, type: TvShowFilterOption, value: string) => {
     e.preventDefault()
     onUserInput(type, value)
   };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-    handleChange(e, "title", e.target.value)
+    handleChange(e, "name", e.target.value)
   }
 
   const handleGenreChange = (e: SelectChangeEvent) => {
@@ -68,14 +68,14 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
       <CardContent>
         <Typography variant="h5" component="h1">
           <FilterAltIcon fontSize="large" />
-          Filter the movies.
+          Filter the TV shows.
         </Typography>
         <TextField
           sx={styles.formControl}
           id="filled-search"
           label="Search field"
           type="search"
-          value={titleFilter}
+          value={nameFilter}
           variant="filled"
           onChange={handleTextChange}
         />
@@ -102,7 +102,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
         <CardContent>
           <Typography variant="h5" component="h1">
             <SortIcon fontSize="large" />
-            Sort the movies.
+            Sort the Tv shows.
           </Typography>
         </CardContent>
       </Card>
@@ -110,4 +110,4 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
   );
 }
 
-export default FilterMoviesCard;
+export default FilterTvShowsCard;
