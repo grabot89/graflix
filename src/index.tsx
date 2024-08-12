@@ -16,6 +16,11 @@ import ActorDetailsPage from "./pages/actorDetailsPage";
 import TvShowDetailsPage from "./pages/tvShowDetailsPage";
 import DiscoverTvShowsPage from "./pages/discoverTvShowsPage";
 import PopularActorsPage from "./pages/popularActorsPage";
+import TvShowsContextProvider from "./contexts/tvShowsContext";
+import ActorsContextProvider from "./contexts/actorsContext";
+import MoviesContextProvider from "./contexts/moviesContext";
+import FavouriteTvShowsPage from "./pages/favouriteTvShowsPage";
+import FavouriteActorsPage from "./pages/favouriteActorsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,7 +36,10 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <SiteHeader /> 
+      <SiteHeader />
+      <MoviesContextProvider>
+      <ActorsContextProvider>
+      <TvShowsContextProvider>
       <Routes>
         <Route path="/movies/reviews/:id" element={<MovieReviewPage/>} />
         <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
@@ -41,12 +49,17 @@ const App = () => {
         <Route path="/movies/popular" element={<PopularMoviesPage />} />
         <Route path="/actors/:id" element={<ActorDetailsPage />} />
         <Route path="/actors/popular" element={<PopularActorsPage />} />
+        <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
         <Route path="/tvshows/discover" element={<DiscoverTvShowsPage />} />
+        <Route path="/tvshows/favourites" element={<FavouriteTvShowsPage />} />
         <Route path="/tvshows/:id" element={<TvShowDetailsPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
         </Routes>
+      </TvShowsContextProvider>
+      </ActorsContextProvider>
+      </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

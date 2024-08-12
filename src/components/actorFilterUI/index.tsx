@@ -5,7 +5,9 @@ import Drawer from "@mui/material/Drawer";
 import { BaseActorProps } from "../../types/interfaces";
 
 export const nameFilter = (actor: BaseActorProps, value: string): boolean => {
-    console.log("actor", actor, "value", value);
+    if (value === "") {
+        return true;
+    }
     return actor.name.toLowerCase().search(value.toLowerCase()) !== -1;
 };
 

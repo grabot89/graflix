@@ -128,7 +128,7 @@ export const getTvShowCredits = (id: string | number) => {
       throw new Error("failed to fetch credits");
     }
     return response.json();
-  }).then((json) => json)
+  }).then((json) => json.cast)
     .catch((error) => {
       throw error
     });

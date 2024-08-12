@@ -36,7 +36,7 @@ interface FilterTvShowsCardProps {
 }
 
 const FilterTvShowsCard: React.FC<FilterTvShowsCardProps> = ({ nameFilter, genreFilter, onUserInput }) => {
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getTVGenres);
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("tvShowGenres", getTVGenres);
 
   if (isLoading) {
     return <Spinner />;

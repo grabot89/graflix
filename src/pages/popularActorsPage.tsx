@@ -17,7 +17,7 @@ const nameFiltering = {
 };
 
 const PopularActorsPage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<PopularActors, Error>("popular", getPopularActors);
+  const { data, error, isLoading, isError } = useQuery<PopularActors, Error>("popularActors", getPopularActors);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [nameFiltering]
   );

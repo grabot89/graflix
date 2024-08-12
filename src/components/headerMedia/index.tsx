@@ -6,11 +6,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
-import { BaseMovieProps, MovieDetailsProps } from "../../types/interfaces";
 import Avatar from "@mui/material/Avatar";
+import { BaseMediaProps } from "../../types/interfaces";
 
 const styles = {
-    root: {  
+  root: {  
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
@@ -22,29 +22,35 @@ const styles = {
   },
 };
 
-const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
-
+// Accept a generic type for movie, actor, or TV show
+const MediaHeader: React.FC<BaseMediaProps> = (media) => {
   const favourites = JSON.parse(localStorage.getItem("favourites") || '[]');
-  
+
+  // Determine whether to use title or name based on what exists
+  const displayName = media.title || media.name;
+
   return (
     <Paper component="div" sx={styles.root}>
       <IconButton aria-label="go back">
         <ArrowBackIcon color="primary" fontSize="large" />
       </IconButton>
 
-      {favourites.some((favourite: BaseMovieProps) => favourite.id === movie.id) ? 
+      {favourites.some((favourite: BaseMediaProps) => favourite.id === media.id) ? 
         <Avatar sx={styles.avatar}>
           <FavoriteIcon />
         </Avatar> : null}
 
       <Typography variant="h4" component="h3">
-        {movie.title}{"   "}
-        <a href={movie.homepage}>
-          <HomeIcon color="primary"  fontSize="large"/>
-        </a>
+        {displayName}{"   "}
+        {media.homepage && (
+          <a href={media.homepage}>
+            <HomeIcon color="primary" fontSize="large" />
+          </a>
+        )}
         <br />
-        <span>{`${movie.tagline}`} </span>
+        {media.tagline && <span>{media.tagline}</span>}
       </Typography>
+
       <IconButton aria-label="go forward">
         <ArrowForwardIcon color="primary" fontSize="large" />
       </IconButton>
@@ -52,4 +58,4 @@ const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
   );
 };
 
-export default MovieHeader;
+export default MediaHeader;

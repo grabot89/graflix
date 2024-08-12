@@ -36,7 +36,7 @@ interface FilterMoviesCardProps {
 }
 
 const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter, onUserInput }) => {
-  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("genres", getMovieGenres);
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>("movieGenres", getMovieGenres);
 
   if (isLoading) {
     return <Spinner />;

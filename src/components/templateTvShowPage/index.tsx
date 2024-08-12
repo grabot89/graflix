@@ -1,5 +1,5 @@
 import React from "react";
-import MovieHeader from "../headerMovie";
+import MediaHeader from "../headerMedia";
 import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -28,7 +28,7 @@ interface TemplateTvShowPageProps {
 
 const TemplateTvShowPage: React.FC<TemplateTvShowPageProps> = ({tvShow, children}) => {
     const { data, error, isLoading, isError } = useQuery<TvShowImage[], Error>(
-        ["images", tvShow.id],
+        ["tvShowImages", tvShow.id],
         () => getTvShowImages(tvShow.id)
     );
 
@@ -46,7 +46,7 @@ const TemplateTvShowPage: React.FC<TemplateTvShowPageProps> = ({tvShow, children
 
     return (
         <>
-            <MovieHeader {...tvShow} />
+            <MediaHeader {...tvShow} />
 
             <Grid container spacing={5} style={{ padding: "15px" }}>
                 <Grid item xs={3}>

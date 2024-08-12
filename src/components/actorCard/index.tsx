@@ -6,7 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
@@ -21,7 +21,7 @@ const styles = {
   card: { maxWidth: 345 },
   media: { height: 500 },
   avatar: {
-    backgroundColor: "rgb(255, 0, 0)",
+    backgroundColor: "rgb(0, 0, 255)",
   },
 };
 
@@ -41,7 +41,7 @@ const isFollowing = follows.find((id) => id === actor.id)? true : false;
       avatar={
         isFollowing ? (
           <Avatar sx={styles.avatar}>
-            <FavoriteIcon />
+            <AccessibilityIcon />
           </Avatar>
         ) : null
       }

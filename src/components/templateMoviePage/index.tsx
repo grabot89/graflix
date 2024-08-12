@@ -1,5 +1,5 @@
 import React from "react";
-import MovieHeader from "../headerMovie";
+import MediaHeader from "../headerMedia";
 import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -28,7 +28,7 @@ interface TemplateMoviePageProps {
 
 const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({movie, children}) => {
     const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>(
-        ["images", movie.id],
+        ["movieImages", movie.id],
         () => getMovieImages(movie.id)
     );
 
@@ -46,7 +46,7 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({movie, children}) 
 
     return (
         <>
-            <MovieHeader {...movie} />
+            <MediaHeader {...movie} />
 
             <Grid container spacing={5} style={{ padding: "15px" }}>
                 <Grid item xs={3}>

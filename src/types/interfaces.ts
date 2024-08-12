@@ -170,3 +170,11 @@ export interface Review {
   rating: number,
   movieId: number,
 }
+
+export interface BaseMediaProps {
+  id: number;
+  title?: string; // Movies
+  name?: string; // Actors and TV shows
+  homepage?: string;
+  tagline?: string; // Only applicable to movies
+}

@@ -13,41 +13,59 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const styles = {
-    title: {
-      flexGrow: 1,
-    },
-  };
+  title: {
+    flexGrow: 1,
+  },
+};
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader: React.FC = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [submenuEl, setSubmenuEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
   const menuOptions = [
     { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favourites" },
+    {
+      label: "Favorites",
+      submenu: [
+        { label: "Favorite Movies", path: "/movies/favourites" },
+        { label: "Favorite TV Shows", path: "/tvshows/favourites" },
+        { label: "Favorite Actors", path: "/actors/favourites" },
+      ],
+    },
     { label: "Upcoming Movies", path: "/movies/upcoming" },
     { label: "Top Movies", path: "/movies/top" },
     { label: "Popular Movies", path: "/movies/popular" },
     { label: "Popular Actors", path: "/actors/popular" },
-    { label: "Discover TV Shows", path: "/tvShows/discover" },
+    { label: "Discover TV Shows", path: "/tvshows/discover" },
   ];
 
   const handleMenuSelect = (pageURL: string) => {
     navigate(pageURL);
+    setAnchorEl(null);
+    setSubmenuEl(null);
   };
 
-  const handleMenu = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleSubmenu = (event: MouseEvent<HTMLElement>) => {
+    setSubmenuEl(event.currentTarget);
+  };
+
+  const closeMenus = () => {
+    setAnchorEl(null);
+    setSubmenuEl(null);
   };
 
   return (
     <>
-      <AppBar position="fixed" elevation={0} color="primary">
+      <AppBar position="fixed" elevation={0} color="primary" sx={{ bgcolor: "maroon" }}>
         <Toolbar>
           <Typography variant="h4" sx={styles.title}>
             Graflix
@@ -79,29 +97,92 @@ const SiteHeader: React.FC = () => {
                   vertical: "top",
                   horizontal: "right",
                 }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
+                open={Boolean(anchorEl)}
+                onClose={closeMenus}
               >
                 {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
-                    {opt.label}
-                  </MenuItem>
+                  opt.submenu ? (
+                    <div key={opt.label}>
+                      <MenuItem onClick={handleSubmenu}>
+                        {opt.label}
+                      </MenuItem>
+                      <Menu
+                        anchorEl={submenuEl}
+                        open={Boolean(submenuEl)}
+                        onClose={closeMenus}
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                      >
+                        {opt.submenu.map((subOpt) => (
+                          <MenuItem
+                            key={subOpt.label}
+                            onClick={() => handleMenuSelect(subOpt.path)}
+                          >
+                            {subOpt.label}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </div>
+                  ) : (
+                    <MenuItem
+                      key={opt.label}
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </MenuItem>
+                  )
                 ))}
               </Menu>
             </>
           ) : (
             <>
               {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
+                opt.submenu ? (
+                  <div key={opt.label}>
+                    <Button
+                      color="inherit"
+                      onClick={handleSubmenu}
+                    >
+                      {opt.label}
+                    </Button>
+                    <Menu
+                      anchorEl={submenuEl}
+                      open={Boolean(submenuEl)}
+                      onClose={closeMenus}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                    >
+                      {opt.submenu.map((subOpt) => (
+                        <MenuItem
+                          key={subOpt.label}
+                          onClick={() => handleMenuSelect(subOpt.path)}
+                        >
+                          {subOpt.label}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </div>
+                ) : (
+                  <Button
+                    key={opt.label}
+                    color="inherit"
+                    onClick={() => handleMenuSelect(opt.path)}
+                  >
+                    {opt.label}
+                  </Button>
+                )
               ))}
             </>
           )}

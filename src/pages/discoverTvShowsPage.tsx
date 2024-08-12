@@ -24,7 +24,7 @@ const genreFiltering = {
 };
 
 const DiscoverTvShowsPage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverTvShows, Error>("discover", getTVShows);
+  const { data, error, isLoading, isError } = useQuery<DiscoverTvShows, Error>("discoverTvShows", getTVShows);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [nameFiltering, genreFiltering]
   );
@@ -53,7 +53,7 @@ const DiscoverTvShowsPage: React.FC = () => {
   return (
     <>
       <PageTemplate
-        title="Discover Tv Shows"
+        title="Discover TV Shows"
         tvShows={displayedTvShows}
         action={(tvShow: BaseTvShowProps) => {
           return <AddToFavouritesIcon {...tvShow} />

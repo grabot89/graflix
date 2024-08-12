@@ -24,7 +24,7 @@ const genreFiltering = {
 };
 
 const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discover", getMovies);
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discoverMovies", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
   );
