@@ -5,6 +5,7 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, {
   titleFilter,
   genreFilter,
+  qualityFilter,
 } from "../components/movieFilterUI";
 import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
@@ -23,10 +24,16 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+const qualityFiltering = {
+  name: "quality",
+  value: "",
+  condition: qualityFilter,
+};
+
 const HomePage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("discoverMovies", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [titleFiltering, genreFiltering]
+    [titleFiltering, genreFiltering, qualityFiltering]
   );
 
   if (isLoading) {
@@ -40,10 +47,9 @@ const HomePage: React.FC = () => {
 
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
-    const updatedFilterSet =
-      type === "title"
-        ? [changedFilter, filterValues[1]]
-        : [filterValues[0], changedFilter];
+    const updatedFilterSet = filterValues.map(filter =>
+      filter.name === type ? changedFilter : filter
+    );
     setFilterValues(updatedFilterSet);
   };
 
@@ -63,6 +69,7 @@ const HomePage: React.FC = () => {
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        qualityFilter={filterValues[2].value}
       />
     </>
   );

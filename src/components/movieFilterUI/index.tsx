@@ -17,6 +17,33 @@ export const genreFilter = (movie: BaseMovieProps, value: string) => {
     return genreId > 0 && genreIds ? genreIds.includes(genreId) : true;
 };
 
+export const qualityFilter = (movie: BaseMovieProps, value: string): boolean => {
+    console.log(value);
+    console.log(movie);
+    if (value === "All") {
+        return true;
+    } else if (value === "1") {
+        return movie.vote_average < 2;
+    } else if (value === "2") {
+        return movie.vote_average >= 2 && movie.vote_average < 3;
+    } else if (value === "3") {
+        return movie.vote_average >= 3 && movie.vote_average < 4;
+    } else if (value === "4") {
+        return movie.vote_average >= 4 && movie.vote_average < 5;
+    } else if (value === "5") {
+        return movie.vote_average >= 5 && movie.vote_average < 6;
+    } else if (value === "6") {
+        return movie.vote_average >= 6 && movie.vote_average < 7;
+    } else if (value === "7") {
+        return movie.vote_average >= 7 && movie.vote_average < 8;
+    } else if (value === "8") {
+        return movie.vote_average >= 8 && movie.vote_average < 9;
+    } else if (value === "9") {
+        return movie.vote_average >= 9;
+    }
+    return true;
+};
+
 const styles = {
     root: {
         backgroundColor: "#bfbfbf",
@@ -33,10 +60,11 @@ interface MovieFilterUIProps {
     onFilterValuesChange: (f: string, s: string) => void;
     titleFilter: string;
     genreFilter: string;
+    runtimeFilter: string;
 }
 
 
-const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, titleFilter, genreFilter }) => {
+const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, titleFilter, genreFilter, runtimeFilter }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
@@ -58,6 +86,7 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, tit
                     onUserInput={onFilterValuesChange}
                     titleFilter={titleFilter}
                     genreFilter={genreFilter}
+                    runtimeFilter={runtimeFilter}
                 />
             </Drawer>
         </>

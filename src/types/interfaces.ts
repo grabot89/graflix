@@ -111,7 +111,7 @@ export interface MovieImage extends Image {}
 
 export interface TvShowImage extends Image {}
 
-export type MovieFilterOption = "title" | "genre";
+export type MovieFilterOption = "title" | "genre" | "quality";
 
 export type ActorFilterOption = "name";
 

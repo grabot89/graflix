@@ -33,9 +33,10 @@ interface FilterMoviesCardProps {
   onUserInput: (f: MovieFilterOption, s: string)  => void;
   titleFilter: string;
   genreFilter: string;
+  qualityFilter: string;
 }
 
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter, onUserInput }) => {
+const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter, qualityFilter, onUserInput }) => {
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>("movieGenres", getMovieGenres);
 
   if (isLoading) {
@@ -60,6 +61,10 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
 
   const handleGenreChange = (e: SelectChangeEvent) => {
     handleChange(e, "genre", e.target.value)
+  };
+
+  const handleQualityChange = (e: SelectChangeEvent) => {
+    handleChange(e, "quality", e.target.value)
   };
 
   return (
@@ -96,6 +101,26 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
             })}
           </Select>
         </FormControl>
+        <FormControl sx={styles.formControl}>
+            <InputLabel id="quality-label">Quality</InputLabel>
+            <Select
+              labelId="quality-label"
+              id="quality-select"
+              value={qualityFilter}
+              onChange={handleQualityChange}
+            >
+              <MenuItem value="All">All</MenuItem>
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+              <MenuItem value="3">3</MenuItem>
+              <MenuItem value="4">4</MenuItem>
+              <MenuItem value="5">5</MenuItem>
+              <MenuItem value="6">6</MenuItem>
+              <MenuItem value="7">7</MenuItem>
+              <MenuItem value="8">8</MenuItem>
+              <MenuItem value="9">9</MenuItem>
+            </Select>
+          </FormControl>
       </CardContent>
     </Card>
     <Card sx={styles.root} variant="outlined">
