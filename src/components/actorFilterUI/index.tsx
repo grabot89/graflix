@@ -29,7 +29,6 @@ interface ActorFilterUIProps {
     nameFilter: string;
 }
 
-
 const ActorFilterUI: React.FC<ActorFilterUIProps> = ({ onFilterValuesChange, nameFilter }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 

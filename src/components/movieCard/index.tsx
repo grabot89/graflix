@@ -39,7 +39,7 @@ const isFavourite = favourites.find((id) => id === movie.id)? true : false;
     <Card sx={styles.card}>
     <CardHeader
       avatar={
-        isFavourite ? (   //CHANGED
+        isFavourite ? (
           <Avatar sx={styles.avatar}>
             <FavoriteIcon />
           </Avatar>

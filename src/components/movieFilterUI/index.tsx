@@ -18,8 +18,6 @@ export const genreFilter = (movie: BaseMovieProps, value: string) => {
 };
 
 export const qualityFilter = (movie: BaseMovieProps, value: string): boolean => {
-    console.log(value);
-    console.log(movie);
     if (value === "All") {
         return true;
     } else if (value === "1") {
