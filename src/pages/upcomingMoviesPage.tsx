@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from '../components/templateMovieListPage';
 import { BaseMovieProps } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
@@ -12,6 +12,8 @@ import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToPlaylistIcon from '../components/cardIcons/addToPlaylist';
+import Pagination from "@mui/material/Pagination";
+import Box from "@mui/material/Box";
 
 const titleFiltering = {
     name: "title",
@@ -32,6 +34,9 @@ const titleFiltering = {
   };
 
 const UpcomingMoviesPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [moviesPerPage] = useState(8);
+  
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("upcoming", getUpcomingMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering, qualityFiltering]
@@ -57,11 +62,21 @@ const UpcomingMoviesPage: React.FC = () => {
   const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
+  const indexOfLastMovie = currentPage * moviesPerPage;
+  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+  const currentMovies = displayedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+  const totalPages = Math.ceil(displayedMovies.length / moviesPerPage);
+
+  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
+
   return (
     <>
       <PageTemplate
         title='Discover Upcoming Movies'
-        movies={displayedMovies}
+        movies={currentMovies}
         action={(movie: BaseMovieProps) => {
           return <AddToPlaylistIcon {...movie} />
         }}
@@ -72,6 +87,20 @@ const UpcomingMoviesPage: React.FC = () => {
         genreFilter={filterValues[1].value}
         qualityFilter={filterValues[2].value}
       />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          sx={{ 
+            backgroundColor: 'maroon',
+            padding: '10px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)'
+          }}
+        />
+      </Box>
     </>
   );
 };

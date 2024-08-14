@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -12,6 +12,8 @@ import MovieFilterUI, {
   genreFilter,
   qualityFilter,
 } from "../components/movieFilterUI";
+import Box from "@mui/material/Box";
+import Pagination from "@mui/material/Pagination";
 
 const titleFiltering = {
   name: "title",
@@ -32,6 +34,9 @@ const qualityFiltering = {
 };
 
 const FavouriteMoviesPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [moviesPerPage] = useState(8);
+  
   const { favourites: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering, qualityFiltering]
@@ -67,11 +72,21 @@ const FavouriteMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  const indexOfLastMovie = currentPage * moviesPerPage;
+  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+  const currentMovies = displayedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+  const totalPages = Math.ceil(displayedMovies.length / moviesPerPage);
+
+  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
+
   return (
     <>
       <PageTemplate
         title="Favourite Movies"
-        movies={displayedMovies}
+        movies={currentMovies}
         action={(movie) => {
           return (
             <>
@@ -87,6 +102,20 @@ const FavouriteMoviesPage: React.FC = () => {
         genreFilter={filterValues[1].value}
         qualityFilter={filterValues[2].value}
       />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          sx={{ 
+            backgroundColor: 'maroon',
+            padding: '10px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)'
+          }}
+        />
+      </Box>
     </>
   );
 };

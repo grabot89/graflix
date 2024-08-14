@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import PageTemplate from "../components/templateMovieListPage";
 import { useQueries } from "react-query";
 import { getTvShow } from "../api/tmdb-api";
@@ -11,6 +11,8 @@ import TvShowFilterUI, {
   genreFilter,
 } from "../components/tvShowFilterUI";
 import { TvShowsContext } from "../contexts/tvShowsContext";
+import Box from "@mui/material/Box";
+import Pagination from "@mui/material/Pagination";
 
 const nameFiltering = {
   name: "title",
@@ -24,6 +26,9 @@ const genreFiltering = {
 };
 
 const FavouriteTvShowsPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tvShowsPerPage] = useState(8);
+
   const { favourites: tvShowIds } = useContext(TvShowsContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [nameFiltering, genreFiltering]
@@ -58,11 +63,21 @@ const FavouriteTvShowsPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  const indexOfLastTvShow = currentPage * tvShowsPerPage;
+  const indexOfFirstMovie = indexOfLastTvShow - tvShowsPerPage;
+  const currentTvShows = displayedTvShows.slice(indexOfFirstMovie, indexOfLastTvShow);
+
+  const totalPages = Math.ceil(displayedTvShows.length / tvShowsPerPage);
+
+  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
+
   return (
     <>
       <PageTemplate
         title="Favourite TV Shows"
-        movies={displayedTvShows}
+        movies={currentTvShows}
         action={(tvShow) => {
           return (
             <>
@@ -77,6 +92,20 @@ const FavouriteTvShowsPage: React.FC = () => {
         nameFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
       />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          sx={{ 
+            backgroundColor: 'maroon',
+            padding: '10px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)'
+          }}
+        />
+      </Box>
     </>
   );
 };
