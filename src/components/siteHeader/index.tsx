@@ -11,6 +11,8 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useAuth } from "../../hooks/useAuth";
+import Box from "@mui/material/Box";
 
 const styles = {
   title: {
@@ -22,13 +24,35 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader: React.FC = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [submenuEl, setSubmenuEl] = useState<null | HTMLElement>(null);
+  const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [subMenuAnchorEl, setSubMenuAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
+  const { session, user, signOut } = useAuth();
+
   const menuOptions = [
     { label: "Home", path: "/" },
+    {
+      label: "Movies",
+      submenu: [
+        { label: "Upcoming Movies", path: "/movies/upcoming" },
+        { label: "Top Movies", path: "/movies/top" },
+        { label: "Popular Movies", path: "/movies/popular" },
+      ],
+    },
+    {
+      label: "TV Shows",
+      submenu: [
+        { label: "Discover TV Shows", path: "/tvshows/discover" },
+      ],
+    },
+    {
+      label: "Actors",
+      submenu: [
+        { label: "Popular Actors", path: "/actors/popular" },
+      ],
+    },
     {
       label: "Favorites",
       submenu: [
@@ -37,30 +61,29 @@ const SiteHeader: React.FC = () => {
         { label: "Favorite Actors", path: "/actors/favourites" },
       ],
     },
-    { label: "Upcoming Movies", path: "/movies/upcoming" },
-    { label: "Top Movies", path: "/movies/top" },
-    { label: "Popular Movies", path: "/movies/popular" },
-    { label: "Popular Actors", path: "/actors/popular" },
-    { label: "Discover TV Shows", path: "/tvshows/discover" },
   ];
+
+  const handleMainMenuOpen = (event: MouseEvent<HTMLElement>) => {
+    setMainMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleSubMenuOpen = (event: MouseEvent<HTMLElement>, label: string) => {
+    setSubMenuAnchorEl({ ...subMenuAnchorEl, [label]: event.currentTarget });
+  };
 
   const handleMenuSelect = (pageURL: string) => {
     navigate(pageURL);
-    setAnchorEl(null);
-    setSubmenuEl(null);
-  };
-
-  const handleMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleSubmenu = (event: MouseEvent<HTMLElement>) => {
-    setSubmenuEl(event.currentTarget);
+    closeMenus();
   };
 
   const closeMenus = () => {
-    setAnchorEl(null);
-    setSubmenuEl(null);
+    setMainMenuAnchorEl(null);
+    setSubMenuAnchorEl({});
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
   };
 
   return (
@@ -73,13 +96,40 @@ const SiteHeader: React.FC = () => {
           <Typography variant="h6" sx={styles.title}>
             The Entertainment Hub
           </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              ml: 2,
+              backgroundColor: 'lightgray',
+              padding: 1,
+              borderRadius: 1,
+            }}
+          >
+            {session ? (
+              <>
+                <Typography variant="body1" sx={{ marginRight: 2 }}>
+                  {user?.email}
+                </Typography>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button color="inherit" onClick={() => navigate('/login')}>
+                Login
+              </Button>
+            )}
+          </Box>
+
           {isMobile ? (
             <>
               <IconButton
                 aria-label="menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={handleMainMenuOpen}
                 color="inherit"
                 size="large"
               >
@@ -87,7 +137,7 @@ const SiteHeader: React.FC = () => {
               </IconButton>
               <Menu
                 id="menu-appbar"
-                anchorEl={anchorEl}
+                anchorEl={mainMenuAnchorEl}
                 anchorOrigin={{
                   vertical: "top",
                   horizontal: "right",
@@ -97,18 +147,18 @@ const SiteHeader: React.FC = () => {
                   vertical: "top",
                   horizontal: "right",
                 }}
-                open={Boolean(anchorEl)}
+                open={Boolean(mainMenuAnchorEl)}
                 onClose={closeMenus}
               >
                 {menuOptions.map((opt) => (
                   opt.submenu ? (
                     <div key={opt.label}>
-                      <MenuItem onClick={handleSubmenu}>
+                      <MenuItem onClick={(event) => handleSubMenuOpen(event, opt.label)}>
                         {opt.label}
                       </MenuItem>
                       <Menu
-                        anchorEl={submenuEl}
-                        open={Boolean(submenuEl)}
+                        anchorEl={subMenuAnchorEl[opt.label]}
+                        open={Boolean(subMenuAnchorEl[opt.label])}
                         onClose={closeMenus}
                         anchorOrigin={{
                           vertical: "top",
@@ -147,13 +197,13 @@ const SiteHeader: React.FC = () => {
                   <div key={opt.label}>
                     <Button
                       color="inherit"
-                      onClick={handleSubmenu}
+                      onClick={(event) => handleSubMenuOpen(event, opt.label)}
                     >
                       {opt.label}
                     </Button>
                     <Menu
-                      anchorEl={submenuEl}
-                      open={Boolean(submenuEl)}
+                      anchorEl={subMenuAnchorEl[opt.label]}
+                      open={Boolean(subMenuAnchorEl[opt.label])}
                       onClose={closeMenus}
                       anchorOrigin={{
                         vertical: "bottom",

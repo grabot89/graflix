@@ -5,9 +5,14 @@ import { supabase } from '../supabaseClient';
 interface AuthContextValue {
   user: User | null;
   session: Session | null;
+  signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextValue>({ user: null, session: null });
+const AuthContext = createContext<AuthContextValue>({
+  user: null,
+  session: null,
+  signOut: async () => {},
+});
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,6 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
+      console.log("Auth", data);
       setSession(data.session);
       setUser(data.session?.user || null);
     };
@@ -32,8 +38,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error.message);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session }}>
+    <AuthContext.Provider value={{ user, session, signOut }}>
       {children}
     </AuthContext.Provider>
   );

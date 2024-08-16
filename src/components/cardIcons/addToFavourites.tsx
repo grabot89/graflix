@@ -3,6 +3,7 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {BaseMovieProps} from "../../types/interfaces"
+import { toast } from "react-toastify";
 
 const AddToFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
   const context = useContext(MoviesContext);
@@ -10,6 +11,7 @@ const AddToFavouritesIcon: React.FC<BaseMovieProps> = (movie) => {
   const onUserSelect = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     context.addToFavourites(movie);
+    toast.success("Movie added to favourites");
   };
   return (
     <IconButton aria-label="add to favorites" onClick={onUserSelect}>

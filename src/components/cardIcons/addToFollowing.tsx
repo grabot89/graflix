@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import {BaseActorProps} from "../../types/interfaces"
 import { ActorsContext } from "../../contexts/actorsContext";
+import { toast } from "react-toastify";
 
 const AddToFollowingIcon: React.FC<BaseActorProps> = (actor) => {
   const context = useContext(ActorsContext);
@@ -10,6 +11,7 @@ const AddToFollowingIcon: React.FC<BaseActorProps> = (actor) => {
   const onUserSelect = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     context.addToFollows(actor);
+    toast.success("Actor added to following");
   };
   return (
     <IconButton aria-label="add to favorites" onClick={onUserSelect}>

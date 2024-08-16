@@ -24,6 +24,9 @@ import LoginPage from "./pages/loginPage";
 import { AuthProvider } from "./hooks/useAuth";
 import React from 'react';
 import PrivateRoute from './PrivateRoute';
+import Logout from './Logout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,11 +44,13 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SiteHeader />
+        <ToastContainer />
         <MoviesContextProvider>
         <ActorsContextProvider>
         <TvShowsContextProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path='/logout' element={<Logout />} />
           <Route path="/movies/reviews/:id" element={<MovieReviewPage/>} />
           <Route path="/movies/favourites" element={<PrivateRoute Component={FavouriteMoviesPage} />} />
           <Route path="/movies/:id" element={<MoviePage />} />
