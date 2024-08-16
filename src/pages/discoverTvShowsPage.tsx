@@ -12,6 +12,7 @@ import Spinner from "../components/spinner";
 import AddToFavouritesIcon from '../components/cardIcons/addToTVFavourites';
 import Box from "@mui/material/Box";
 import Pagination from "@mui/material/Pagination";
+import Fuse from 'fuse.js';
 
 const nameFiltering = {
   name: "name",
@@ -42,7 +43,6 @@ const DiscoverTvShowsPage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
@@ -53,13 +53,23 @@ const DiscoverTvShowsPage: React.FC = () => {
   };
 
   const tvShows = data ? data.results : [];
+
+  const fuse = new Fuse(tvShows, {
+    keys: ['name'],
+    threshold: 0.5,
+  });
+
   const displayedTvShows = filterFunction(tvShows);
+
+  const filteredTvShows = filterValues[0].value ? 
+    fuse.search(filterValues[0].value).map(result => result.item) : 
+    displayedTvShows;
 
   const indexOfLastTvShow = currentPage * tvShowsPerPage;
   const indexOfFirstMovie = indexOfLastTvShow - tvShowsPerPage;
-  const currentTvShows = displayedTvShows.slice(indexOfFirstMovie, indexOfLastTvShow);
+  const currentTvShows = filteredTvShows.slice(indexOfFirstMovie, indexOfLastTvShow);
 
-  const totalPages = Math.ceil(displayedTvShows.length / tvShowsPerPage);
+  const totalPages = Math.ceil(filteredTvShows.length / tvShowsPerPage);
 
   const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);

@@ -11,6 +11,7 @@ import Spinner from "../components/spinner";
 import AddToFollowingIcon from '../components/cardIcons/addToFollowing';
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
+import Fuse from 'fuse.js';
 
 const nameFiltering = {
   name: "name",
@@ -42,13 +43,23 @@ const PopularActorsPage: React.FC = () => {
   };
 
   const actors = data ? data.results : [];
+
+  const fuse = new Fuse(actors, {
+    keys: ['name'],
+    threshold: 0.5,
+  });
+
   const displayedActors = filterFunction(actors);
+
+  const filteredActors = filterValues[0].value ? 
+    fuse.search(filterValues[0].value).map(result => result.item) : 
+    displayedActors;
 
   const indexOfLastActor = currentPage * actorsPerPage;
   const indexOfFirstActor = indexOfLastActor - actorsPerPage;
-  const currentActors = displayedActors.slice(indexOfFirstActor, indexOfLastActor);
+  const currentActors = filteredActors.slice(indexOfFirstActor, indexOfLastActor);
 
-  const totalPages = Math.ceil(displayedActors.length / actorsPerPage);
+  const totalPages = Math.ceil(filteredActors.length / actorsPerPage);
 
   const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);

@@ -13,6 +13,8 @@ import Spinner from "../components/spinner";
 import AddToFavouritesIcon from '../components/cardIcons/addToFavourites';
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
+import Fuse from 'fuse.js';
+
 
 const titleFiltering = {
   name: "title",
@@ -58,13 +60,23 @@ const HomePage: React.FC = () => {
   };
 
   const movies = data ? data.results : [];
+
+  const fuse = new Fuse(movies, {
+    keys: ['title'],
+    threshold: 0.5,
+  });
+    
   const displayedMovies = filterFunction(movies);
+
+  const filteredMovies = filterValues[0].value ? 
+    fuse.search(filterValues[0].value).map(result => result.item) : 
+    displayedMovies;
 
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = displayedMovies.slice(indexOfFirstMovie, indexOfLastMovie);
+  const currentMovies = filteredMovies.slice(indexOfFirstMovie, indexOfLastMovie);
 
-  const totalPages = Math.ceil(displayedMovies.length / moviesPerPage);
+  const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
 
   const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
