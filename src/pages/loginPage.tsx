@@ -26,7 +26,6 @@ const LoginPage: React.FC = () => {
       setError(error.message);
       toast.error(`Login failed: ${error.message}`);
     } else {
-      console.log("Login do nothing");
       navigate('/');
     }
   };

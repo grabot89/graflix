@@ -27,6 +27,7 @@ import PrivateRoute from './PrivateRoute';
 import Logout from './Logout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AnniversaryPage from './pages/anniversaryPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
+          <Route path="/onthisday" element={<AnniversaryPage />} /> 
           </Routes>
         </TvShowsContextProvider>
         </ActorsContextProvider>

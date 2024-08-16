@@ -13,6 +13,8 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAuth } from "../../hooks/useAuth";
 import Box from "@mui/material/Box";
+import SearchIcon from "@mui/icons-material/Search";
+import CakeIcon from '@mui/icons-material/Cake';
 
 const styles = {
   title: {
@@ -96,6 +98,19 @@ const SiteHeader: React.FC = () => {
           <Typography variant="h6" sx={styles.title}>
             The Entertainment Hub
           </Typography>
+          <IconButton
+            color="inherit"
+            onClick={() => navigate("/onthisday")}
+          >
+            <CakeIcon />
+          </IconButton>
+          <IconButton
+            color="inherit"
+            onClick={() => navigate("/search")}
+          >
+            <SearchIcon />
+          </IconButton>
+          
 
           <Box
             sx={{

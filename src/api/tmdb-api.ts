@@ -235,3 +235,21 @@ export const getBestMovies = () => {
       throw error
     });
 };
+
+export const getAnniversaryMovies = () => {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = Math.floor(Math.random() * (2024 - 1900 + 1)) + 1900;
+  const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  return fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&primary_release_date.gte=${dateString}&primary_release_date.lte=${dateString}&language=en-US&include_adult=false&page=1`
+  ).then((response) => {
+    if (!response.ok)
+      throw new Error(`Unable to fetch movies. Response status: ${response.status}`);
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};
