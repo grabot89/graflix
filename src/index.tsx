@@ -29,6 +29,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AnniversaryPage from './pages/anniversaryPage';
 import SearchPage from './pages/searchPage';
+import PlayListMoviesPage from './pages/playlistMoviesPage';
+import PlaylistMoviesPage from './pages/playlistMoviesPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +57,7 @@ const App = () => {
           <Route path='/logout' element={<Logout />} />
           <Route path="/movies/reviews/:id" element={<MovieReviewPage/>} />
           <Route path="/movies/favourites" element={<PrivateRoute Component={FavouriteMoviesPage} />} />
+          <Route path="/movies/playlist" element={<PrivateRoute Component={PlaylistMoviesPage} />} />
           <Route path="/movies/:id" element={<MoviePage />} />
           <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
           <Route path="/movies/top" element={<TopMoviesPage />} />
