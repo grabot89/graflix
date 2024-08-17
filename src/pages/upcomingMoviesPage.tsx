@@ -15,6 +15,7 @@ import AddToPlaylistIcon from '../components/cardIcons/addToPlaylist';
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import Fuse from "fuse.js";
+import AddToThemedPlaylistIcon from "../components/cardIcons/addToThemedPlaylist";
 
 const titleFiltering = {
     name: "title",
@@ -88,9 +89,12 @@ const UpcomingMoviesPage: React.FC = () => {
       <PageTemplate
         title='Discover Upcoming Movies'
         movies={currentMovies}
-        action={(movie: BaseMovieProps) => {
-          return <AddToPlaylistIcon {...movie} />
-        }}
+        action={(movie: BaseMovieProps) => (
+          <>
+            <AddToPlaylistIcon {...movie} />
+            <AddToThemedPlaylistIcon {...movie} />
+          </>
+        )}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}

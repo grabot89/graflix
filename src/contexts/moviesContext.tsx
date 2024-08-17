@@ -9,6 +9,8 @@ interface MovieContextInterface {
     playlist: number[];
     addToPlaylist: ((movie: BaseMovieProps) => void);
     removeFromPlaylist: ((movie: BaseMovieProps) => void);
+    themedPlaylists: Record<string, number[]>;
+    addToThemedPlaylist: (movie: BaseMovieProps) => void;
 }
 
 const initialContextState: MovieContextInterface = {
@@ -19,6 +21,8 @@ const initialContextState: MovieContextInterface = {
     playlist: [],
     addToPlaylist: () => {},
     removeFromPlaylist: () => {},
+    themedPlaylists: {},
+    addToThemedPlaylist: () => {},
 };
 
 export const MoviesContext = React.createContext<MovieContextInterface>(initialContextState);
@@ -27,6 +31,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const [favourites, setFavourites] = useState<number[]>([]);
     const [myReviews, setMyReviews] = useState<Review[]>( [] );
     const [playlist, setPlaylist] = useState<number[]>([]);
+    const [themedPlaylists, setThemedPlaylists] = useState<Record<string, number[]>>({});
 
     const addToFavourites = useCallback((movie: BaseMovieProps) => {
         setFavourites((prevFavourites) => {
@@ -58,6 +63,17 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         setPlaylist((prevPlaylist) => prevPlaylist.filter((mId) => mId !== movie.id));
     }, []);
 
+    const addToThemedPlaylist = (movie: BaseMovieProps) => {
+        const { genre_ids } = movie;
+    
+        genre_ids.forEach((genre) => {
+          setThemedPlaylists((prev) => ({
+            ...prev,
+            [genre]: prev[genre] ? [...prev[genre], movie.id] : [movie.id],
+          }));
+        });
+      };
+
     return (
         <MoviesContext.Provider
             value={{
@@ -67,7 +83,9 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 addReview,
                 playlist,
                 addToPlaylist,
-                removeFromPlaylist
+                removeFromPlaylist,
+                themedPlaylists,
+                addToThemedPlaylist
             }}
         >
             {children}

@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -13,6 +14,7 @@ import MovieFilterUI, {
 } from "../components/movieFilterUI";
 import Box from "@mui/material/Box";
 import Pagination from "@mui/material/Pagination";
+import { GenreContext } from "../contexts/genresContext";
 
 const titleFiltering = {
   name: "title",
@@ -33,15 +35,23 @@ const qualityFiltering = {
 };
 
 const PlaylistMoviesPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(8);
-  
-  const { playlist: movieIds } = useContext(MoviesContext);
+
+  const { playlist, themedPlaylists } = useContext(MoviesContext);
+  const { genres } = useContext(GenreContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering, qualityFiltering]
   );
 
-  // Create an array of queries and run them in parallel.
+  const getGenreName = (genreId: number) => {
+    const genre = genres.find((g) => g.id === genreId);
+    return genre ? genre.name : `Genre ${genreId}`;
+  };
+
+  const movieIds = id === "original" ? playlist : themedPlaylists[id] || [];
+  
   const playlistMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -51,7 +61,6 @@ const PlaylistMoviesPage: React.FC = () => {
     })
   );
 
-  // Check if any of the parallel queries is still loading.
   const isLoading = playlistMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
@@ -84,7 +93,7 @@ const PlaylistMoviesPage: React.FC = () => {
   return (
     <>
       <PageTemplate
-        title="My Movie Playlist"
+        title={`Playlist: ${id === "original" ? "My Playlist" : `${getGenreName(Number(id))} Playlist`}`}
         movies={currentMovies}
         action={(movie) => {
           return (

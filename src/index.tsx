@@ -31,6 +31,8 @@ import AnniversaryPage from './pages/anniversaryPage';
 import SearchPage from './pages/searchPage';
 import PlayListMoviesPage from './pages/playlistMoviesPage';
 import PlaylistMoviesPage from './pages/playlistMoviesPage';
+import PlaylistsPage from './pages/playlistsPage';
+import { GenreProvider } from './contexts/genresContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +54,7 @@ const App = () => {
         <MoviesContextProvider>
         <ActorsContextProvider>
         <TvShowsContextProvider>
+        <GenreProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path='/logout' element={<Logout />} />
@@ -73,7 +76,10 @@ const App = () => {
           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
           <Route path="/onthisday" element={<PrivateRoute Component={AnniversaryPage} /> } />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/playlists" element={<PlaylistsPage />} />
+          <Route path="/playlists/:id" element={<PlaylistMoviesPage />} />
           </Routes>
+        </GenreProvider>
         </TvShowsContextProvider>
         </ActorsContextProvider>
         </MoviesContextProvider>

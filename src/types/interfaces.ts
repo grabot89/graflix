@@ -135,11 +135,13 @@ export interface Review {
     author: string
 }
 
+export interface Genre {
+  id: number;
+  name: string;
+}
+
 export interface GenreData {
-  genres: {
-    id: string;
-    name: string
-  }[];
+  genres: Genre[];
 }
 
 export interface DiscoverMovies {
