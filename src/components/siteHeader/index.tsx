@@ -117,7 +117,7 @@ const SiteHeader: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               ml: 2,
-              backgroundColor: 'lightgray',
+              backgroundColor: 'orange',
               padding: 1,
               borderRadius: 1,
             }}

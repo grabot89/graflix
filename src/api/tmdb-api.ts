@@ -253,3 +253,42 @@ export const getAnniversaryMovies = () => {
       throw error
     });
 };
+
+export const getMoviesBySearch = (query: string) => {
+  return fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${query}&page=5`
+  ).then((response) => {
+    if (!response.ok)
+      throw new Error(`Unable to search for movies. Response status: ${response.status}`);
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};
+
+export const getTvShowsBySearch = (query: string) => {
+  return fetch(
+    `https://api.themoviedb.org/3/search/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${query}&page=5`
+  ).then((response) => {
+    if (!response.ok)
+      throw new Error(`Unable to search for tv shows. Response status: ${response.status}`);
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};
+
+export const getActorsBySearch = (query: string) => {
+  return fetch(
+    `https://api.themoviedb.org/3/search/person?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${query}&page=5`
+  ).then((response) => {
+    if (!response.ok)
+      throw new Error(`Unable to search for actors. Response status: ${response.status}`);
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};

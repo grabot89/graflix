@@ -28,6 +28,7 @@ import Logout from './Logout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AnniversaryPage from './pages/anniversaryPage';
+import SearchPage from './pages/searchPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,7 +68,8 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
-          <Route path="/onthisday" element={<AnniversaryPage />} /> 
+          <Route path="/onthisday" element={<AnniversaryPage />} />
+          <Route path="/search" element={<SearchPage />} />
           </Routes>
         </TvShowsContextProvider>
         </ActorsContextProvider>
