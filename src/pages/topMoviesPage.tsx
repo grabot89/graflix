@@ -16,6 +16,7 @@ import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import Fuse from "fuse.js";
 import AddToThemedPlaylistIcon from "../components/cardIcons/addToThemedPlaylist";
+import { useAuth } from "../hooks/useAuth";
 
 const titleFiltering = {
     name: "title",
@@ -38,6 +39,7 @@ const titleFiltering = {
 const TopMoviesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(8);
+  const { session } = useAuth();
   
   const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>("top", getBestMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
@@ -92,7 +94,7 @@ const TopMoviesPage: React.FC = () => {
         action={(movie: BaseMovieProps) => (
           <>
             <AddToPlaylistIcon {...movie} />
-            <AddToThemedPlaylistIcon {...movie} />
+            {session && <AddToThemedPlaylistIcon {...movie} />}
           </>
         )}
       />
