@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setError(null);
     const { error } = await supabase.auth.signUp({ email, password });

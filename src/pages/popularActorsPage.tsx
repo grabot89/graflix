@@ -61,7 +61,7 @@ const PopularActorsPage: React.FC = () => {
 
   const totalPages = Math.ceil(filteredActors.length / actorsPerPage);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

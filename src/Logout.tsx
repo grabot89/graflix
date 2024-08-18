@@ -4,6 +4,7 @@ import { supabase } from './supabaseClient';
 import { toast } from 'react-toastify';
 
 const Logout: React.FC = () => {
+  // @ts-ignore
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 

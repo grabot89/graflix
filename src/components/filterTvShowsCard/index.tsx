@@ -46,6 +46,7 @@ const FilterTvShowsCard: React.FC<FilterTvShowsCardProps> = ({ nameFilter, genre
   }
   const genres = data?.genres || [];
   if (genres[0].name !== "All") {
+    // @ts-ignore
     genres.unshift({ id: "0", name: "All" });
   }
   

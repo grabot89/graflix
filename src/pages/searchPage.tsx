@@ -52,8 +52,11 @@ const SearchPage: React.FC = () => {
   };
 
   if (movieLoading || tvLoading || actorLoading) return <Spinner />;
+  // @ts-ignore
   if (movieError) return <h1>{movieError.message}</h1>;
+  // @ts-ignore
   if (tvError) return <h1>{tvError.message}</h1>;
+  // @ts-ignore
   if (actorError) return <h1>{actorError.message}</h1>;
 
   const movies = movieData?.results || [];
@@ -90,7 +93,7 @@ const SearchPage: React.FC = () => {
         <Pagination
           count={totalMoviePages}
           page={currentMoviePage}
-          onChange={(e, value) => setCurrentMoviePage(value)}
+          onChange={(_e, value) => setCurrentMoviePage(value)}
           color="primary"
         />
       </Box>
@@ -104,7 +107,7 @@ const SearchPage: React.FC = () => {
         <Pagination
           count={totalTvShowPages}
           page={currentTvShowPage}
-          onChange={(e, value) => setCurrentTvShowPage(value)}
+          onChange={(_e, value) => setCurrentTvShowPage(value)}
           color="primary"
         />
       </Box>
@@ -118,7 +121,7 @@ const SearchPage: React.FC = () => {
         <Pagination
           count={totalActorPages}
           page={currentActorPage}
-          onChange={(e, value) => setCurrentActorPage(value)}
+          onChange={(_e, value) => setCurrentActorPage(value)}
           color="primary"
         />
       </Box>

@@ -71,7 +71,7 @@ const DiscoverTvShowsPage: React.FC = () => {
 
   const totalPages = Math.ceil(filteredTvShows.length / tvShowsPerPage);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

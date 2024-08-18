@@ -293,7 +293,7 @@ export const getActorsBySearch = (query: string) => {
     });
 };
 
-export const createMovie = async (movieData: any, posterData: FormData) => {
+export const createMovie = async (movieData: unknown) => {
   // Replace this URL with the correct endpoint for creating a movie
   const movieResponse = await fetch(
     `https://api.themoviedb.org/3/movie?api_key=${import.meta.env.VITE_TMDB_KEY}`,

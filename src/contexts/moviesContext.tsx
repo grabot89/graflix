@@ -66,6 +66,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const addToThemedPlaylist = (movie: BaseMovieProps) => {
         const { genre_ids } = movie;
     
+        // @ts-ignore
         genre_ids.forEach((genre) => {
           setThemedPlaylists((prev) => ({
             ...prev,

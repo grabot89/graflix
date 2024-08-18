@@ -82,7 +82,7 @@ const UpcomingMoviesPage: React.FC = () => {
 
   const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

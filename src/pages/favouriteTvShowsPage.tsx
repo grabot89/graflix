@@ -69,7 +69,7 @@ const FavouriteTvShowsPage: React.FC = () => {
 
   const totalPages = Math.ceil(displayedTvShows.length / tvShowsPerPage);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

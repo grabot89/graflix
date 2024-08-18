@@ -50,10 +50,11 @@ const PlaylistMoviesPage: React.FC = () => {
     return genre ? genre.name : `Genre ${genreId}`;
   };
 
+  // @ts-ignore
   const movieIds = id === "original" ? playlist : themedPlaylists[id] || [];
   
   const playlistMovieQueries = useQueries(
-    movieIds.map((movieId) => {
+    movieIds.map((movieId: number) => {
       return {
         queryKey: ["movie", movieId],
         queryFn: () => getMovie(movieId.toString()),
@@ -86,7 +87,7 @@ const PlaylistMoviesPage: React.FC = () => {
 
   const totalPages = Math.ceil(displayedMovies.length / moviesPerPage);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { getTvShowReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 
-import { TvShowDetailsProps, Review } from "../../types/interfaces"; // Import the MovieT type from the appropriate location
+import { TvShowDetailsProps, Review } from "../../types/interfaces";
 
 const styles = {
     table: {
