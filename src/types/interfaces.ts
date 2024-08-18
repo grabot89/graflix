@@ -180,3 +180,14 @@ export interface BaseMediaProps {
   homepage?: string;
   tagline?: string; // Only applicable to movies
 }
+
+export interface ProductionCompany {
+  id: number;
+  logo_path: string;
+  name: string;
+  origin_country: string;
+}
+
+export interface ProductionCompanies {
+  production_companies: ProductionCompany[];
+}

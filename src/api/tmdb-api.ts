@@ -292,3 +292,26 @@ export const getActorsBySearch = (query: string) => {
       throw error
     });
 };
+
+export const createMovie = async (movieData: any, posterData: FormData) => {
+  // Replace this URL with the correct endpoint for creating a movie
+  const movieResponse = await fetch(
+    `https://api.themoviedb.org/3/movie?api_key=${import.meta.env.VITE_TMDB_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(movieData),
+    }
+  );
+
+  if (!movieResponse.ok) {
+    throw new Error(`Failed to create movie: ${movieResponse.statusText}`);
+  }
+
+  const movie = await movieResponse.json();
+
+  return movie;
+};
+

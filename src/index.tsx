@@ -29,10 +29,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AnniversaryPage from './pages/anniversaryPage';
 import SearchPage from './pages/searchPage';
-import PlayListMoviesPage from './pages/playlistMoviesPage';
 import PlaylistMoviesPage from './pages/playlistMoviesPage';
 import PlaylistsPage from './pages/playlistsPage';
 import { GenreProvider } from './contexts/genresContext';
+import FantasyMoviesPage from './pages/fantasyMoviesPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,8 +76,9 @@ const App = () => {
           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
           <Route path="/onthisday" element={<PrivateRoute Component={AnniversaryPage} /> } />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/playlists" element={<PlaylistsPage />} />
-          <Route path="/playlists/:id" element={<PlaylistMoviesPage />} />
+          <Route path="/playlists" element={<PrivateRoute Component={PlaylistsPage} />} />
+          <Route path="/playlists/:id" element={<PrivateRoute Component={PlaylistMoviesPage} />} />
+          <Route path="/movies/myfantasy" element={<PrivateRoute Component={FantasyMoviesPage} /> } />
           </Routes>
         </GenreProvider>
         </TvShowsContextProvider>
